@@ -34,4 +34,4 @@ Yh5Confirm({
 >> leftButtonTextSize: 左侧按钮字体大小， string('XXpx'), default: 14px
 >> rightButtonText: 右侧按钮内容， string, default: 确定  
 >> rightButtonTextColor： 右侧按钮字体颜色, string, default: '#30b2fb'   
->> rightButtonTextSize: 右侧按钮字体大小， string('XXpx'), default: 14px  
+>> rightButtonTextSize: 右侧按钮字体大小， string('XXpx'), default: 14px 

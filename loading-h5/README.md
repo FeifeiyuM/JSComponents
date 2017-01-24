@@ -1,4 +1,4 @@
-# H5 页面 Loading 效果 #
+# HTML 页面 Loading (加载) 效果 #
 
 > 本文主要介绍一款基于 CSS3 的 Loading 组件 Yloading
 > ![loading](./loading.png)

@@ -6,7 +6,7 @@
 ## 使用 Yh5confirm ##
 > 1、引入Yh5confirm 
 ```html  
-<script src="/static/common/slider/slider-1.0.js"></script> <!--引入 slider-->
+<script src="/static/common/yh5confirm.js"></script> <!--引入 confirm-->
 ```
 
 > 2、调用Yh5confirm

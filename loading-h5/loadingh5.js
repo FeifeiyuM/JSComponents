@@ -310,4 +310,4 @@ var Yloading = (function() {
 }())
 
 //如果采用模块化打包引入的时候加上这句
-//module.exports = Yloading
+//module.exports = Yloading 

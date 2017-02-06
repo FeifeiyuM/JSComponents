@@ -129,13 +129,13 @@ var Yh5Confirm = (function() {
             var confirmTextContent = document.getElementById('yconfirm-content')
             opt.confirmText && (confirmTextContent.innerHTML = opt.confirmText)
             opt.confirmTextColor && (confirmTextContent.style.color = opt.confirmTextColor)
-            opt.confirmTextSize && (confirmTextContent.style.fontSize = opt.confirmTextSize )
+            opt.confirmTextSize && (confirmTextContent.style.fontSize = opt.confirmTextSize)
             
             opt.leftButtonText && (leftButton.value = opt.leftButtonText)
             opt.leftButtonTextColor && (leftButton.style.color = opt.leftButtonTextColor)
             opt.leftButtonTextSize && (leftButton.style.fontSize = opt.leftButtonTextSize)
             
-            opt.rightButtonText && (rightButton.value = opt.rightButtonText )
+            opt.rightButtonText && (rightButton.value = opt.rightButtonText)
             opt.rightButtonTextColor && (rightButton.style.color = opt.rightButtonTextColor)
             opt.rightButtonTextSize && (rightButton.style.fontSize = opt.rightButtonTextSize)
         }
@@ -159,4 +159,4 @@ var Yh5Confirm = (function() {
 }())
 
 //如果采用模块化打包引入的时候加上这句
-//module.exports = Yh5Confirm
+module.exports = Yh5Confirm

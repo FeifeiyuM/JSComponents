@@ -159,4 +159,4 @@ var Yh5Confirm = (function() {
 }())
 
 //如果采用模块化打包引入的时候加上这句
-module.exports = Yh5Confirm
+//module.exports = Yh5Confirm

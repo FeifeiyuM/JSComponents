@@ -173,20 +173,24 @@ var Yscroll = (function() {
                     startY = touch.pageY
                     break
                 case 'touchmove':
-                    offsetY = touch.pageY - startY
-                    if(self.refresh && scrollTop === 0 && offsetY > 0) {
-                        //在顶部，下拉
-                        evt.preventDefault()
-                        self.ysWrap.style.top = offsetY + 'px'
-                        self.refreshNode.style.display = 'block'
-                        self.loadMoreNode.style.display = 'none'
-                    } else if((offsetTop - scrollTop) < 3 && offsetTop > 0 && offsetY < 0) {
-                        //在底部， 上拉
-                        //页面存在折叠 即 offsetTop > 0
-                        evt.preventDefault()
-                        self.ysWrap.style.top = offsetY + 'px'
-                        self.loadMoreNode.style.display = 'block'
-                        self.refreshNode.style.display = 'none'
+                   if(touch.pageY < 200) { //avoid scroll leakage
+                        evt.preventDefault
+                    } else {
+                        offsetY = touch.pageY - startY
+                        if(self.refresh && scrollTop === 0 && offsetY > 0) {
+                            //在顶部，下拉
+                            evt.preventDefault()
+                            self.ysWrap.style.top = offsetY + 'px'
+                            self.refreshNode.style.display = 'block'
+                            self.loadMoreNode.style.display = 'none'
+                        } else if((offsetTop - scrollTop) < 3 && offsetTop > 0 && offsetY < 0) {
+                            //在底部， 上拉
+                            //页面存在折叠 即 offsetTop > 0
+                            evt.preventDefault()
+                            self.ysWrap.style.top = offsetY + 'px'
+                            self.loadMoreNode.style.display = 'block'
+                            self.refreshNode.style.display = 'none'
+                        }
                     }
                     break
                 case 'touchend':

@@ -1,10 +1,10 @@
 /**
  * author: feifeiyu
- * version: 2.0
+ * version: 2.3
  * Yslider is a simple images slider for h5
  * @param target //slider container id
  * @param interval  // images change interval, s, default 3s
- * @param imgArray // images list, include properties: redirect, url, detail
+ * @param imgArray // images list, include properties: redirect, type, url, detail
  * @param showCircle //show circle nav, dafault true
  * @param circleColor: //circle background-color
  * yslider blog: https://feifeiyum.github.io/2016/10/30/yslider/
@@ -42,15 +42,26 @@ var Yslider = (function() {
         //生成slider dom 字符串
         var sliderNode = '<div id="yslider-wrap" class="yslider-wrap"'
             + 'style="position: relative; width: 100%; height: 100%; overflow: hidden;">'
-            +  '<ul id="yslider-imglist" class="yslider-imglist" style="margin: 0; padding: 0; height: 100%; transition: all .5s; width: ' +( conWidth * (imgLength * 2) ) + 'px;">'
+            +  '<ul id="yslider-imglist" class="yslider-imglist" style="position: relative;margin: 0; padding: 0; height: 100%; transition: all 0.5s; width: ' +( conWidth * (imgLength * 2) ) + 'px;">'
         var sliderItems = ''
-        for(var i = 0; i < imgLength; i++) {
-            sliderItems += '<li style="display: inline-block; height: 100%; width: ' + conWidth + 'px;">'
-                + (opt.imgArray[i].redirect ? '<a\ href="' + opt.imgArray[i].redirect + '">' : '<a>')
-                + '<img\ src="' + opt.imgArray[i].url + '"\ alt="' + opt.imgArray[i].detail + '"\ style="width: 100%;">'
-                + '</a></li>'
+        for(var i = 0; i < 2 * imgLength; i++) {
+            var index = i % imgLength
+            if(opt.imgArray[index].type === 'video') {
+                sliderItems += '<li style="display: inline-block; height: 100%; width: ' + conWidth + 'px;">'
+                   + '<img\ v-url="' + opt.imgArray[index].redirect + '" src="' + opt.imgArray[index].url + '"\ alt="' + opt.imgArray[index].detail + '"\ style="width: 100%;">'
+                   + '<button class="video-play" v-url="' + opt.imgArray[index].redirect + '" style="position:absolute; top:35%; left:' + conWidth*(i+0.4)+ 'px; border: 2px solid #fff; border-radius: 50%; background: rgba(43, 51, 63, 0.6); height: 60px; width: 60px; "><div v-url="' + opt.imgArray[index].redirect + '" style="position:relative;left:16px;width:0;height:0;transform: rotate(45deg);border:8px solid;border-color: #fff #fff transparent transparent;"></div></button>'
+                   + '</li>'
+            } else {
+                sliderItems += '<li style="display: inline-block; height: 100%; width: ' + conWidth + 'px;">'
+                    + (opt.imgArray[index].redirect ? '<a\ href="' + opt.imgArray[index].redirect + '">' : '<a>')
+                    + '<img\ src="' + opt.imgArray[index].url + '"\ alt="' + opt.imgArray[index].detail + '"\ style="width: 100%;">'
+                    + '</a></li>'
+            }
+            if(imgLength === 1) {
+                break
+            }
         }
-        sliderNode += sliderItems + sliderItems
+        sliderNode += sliderItems
 
         if(opt.showCircle && imgLength > 1) {
             sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: 15px; margin: auto; width:'+ (18 * imgLength) +'px;">'
@@ -69,20 +80,25 @@ var Yslider = (function() {
             circlesNode = document.getElementsByClassName('ysclider-circle')
             circleColor = cColor || '#00F5FF'
             //初始化，第一个园点加上样式
-            circlesNode[0].style.backgroundColor = circleColor
-            circlesNode[0].style.borderColor = circleColor
+            if(circlesNode.length > 0) {
+                circlesNode[0].style.backgroundColor = circleColor
+                circlesNode[0].style.borderColor = circleColor
+            }
         }
         interval = (inval * 1000) || 3000
     }
     //图片切换函数
     var ysChangeImg = function(index) {
+        if(imgLength === 1) {
+            return
+        }
         if(index == 'next') {
-			currentIndex ++
-		} else if(index == 'prev') {
-			currentIndex --
-		} else {
-			currentIndex = index
-		}
+            currentIndex++
+        } else if(index == 'prev') {
+            currentIndex--
+        } else {
+            currentIndex = index
+        }
         currentIndex = currentIndex < 0 ? (imgLength * 2 - 1) : (currentIndex % (imgLength * 2))
         var circleIndex = currentIndex % imgLength
         
@@ -100,6 +116,48 @@ var Yslider = (function() {
                 }
             }
         }
+    }
+    //视频播放
+    var ysPlayVideo = function(vsrc) {
+        var yslider = document.getElementById('yslider-wrap')
+        var coverTag, closeTag, videoTag, vSource
+        //播放器关闭
+        var closeVideo = function() {
+            //销毁播放器
+            yslider.removeChild(coverTag)
+        }
+        //生成播放器元素
+        var genVTage = function() {
+            coverTag = document.createElement('div')
+            coverTag.id = 'yslider-cover'
+            coverTag.style.cssText = 'position: fixed;'
+                + 'top:0;left:0; width:100%;height:100%;background:rgba(0,0,0,0.8)'
+            closeTag = document.createElement('div')
+            closeTag.id = 'yslider-closev'
+            closeTag.style.cssText = 'position:absolute;'
+                + 'margin: 5px;'
+                + 'top:0;right:0;height:30px;width:30px;border-radius:50%;background:#fff;color:#000;'
+                + 'font-size:24px;text-align:center;'
+            closeTag.innerHTML = 'X'
+            videoTag = document.createElement('video')
+            videoTag.id = 'yslider-video'
+            videoTag.autoplay = 'true'
+            videoTag.controls = 'true'
+            videoTag.style.cssText = 'position: relative;'
+                + 'top:25%;'
+                + 'width:' + conWidth + 'px;height:auto;'
+            vSource = document.createElement('source') 
+            vSource.src = vsrc
+            vSource.type = 'video/mp4'
+            videoTag.appendChild(vSource)
+            coverTag.appendChild(closeTag)
+            coverTag.appendChild(videoTag)
+            yslider.appendChild(coverTag)
+        }
+        //播放
+        genVTage()
+        closeTag.addEventListener('click', closeVideo, false)
+        
     }
     //自动播放函数
     var ysAutoPlay = function() {
@@ -127,14 +185,19 @@ var Yslider = (function() {
                     break
                 case 'touchend':
                     e.preventDefault()
-                    if(ySlideroffsetX < 3 || ySlideroffsetX > -3) { //点击图片
-                        imgsNode.childNodes[currentIndex].childNodes[0].click()
+                    if(ySlideroffsetX < 3 && ySlideroffsetX > -3) { //点击图片
+                        var vsrc = e.target.getAttribute('v-url')
+                        if(vsrc) {
+                            ysPlayVideo(vsrc)
+                        } else {
+                            imgsNode.childNodes[currentIndex].childNodes[0].click()
+                        }
                     } else if(ySlideroffsetX < -150) {
                         ysChangeImg('next') //左滑下一页
                     } else if(ySlideroffsetX > 150) {
                         ysChangeImg('prev') //右划上一页
                     } else { //滑动距离小，恢复
-                        imgsNode.style.marginLeft = '-' + (currentSlider * _thisWidth) + 'px'
+                        imgsNode.style.marginLeft = '-' + (currentIndex * conWidth) + 'px'
                     }
                     ySlideroffsetX = 0  //清空偏移
                     ySliderStartX = 0 //清空起始坐标
@@ -142,14 +205,19 @@ var Yslider = (function() {
                     break
                 case 'touchcancel':
                     e.preventDefault()
-                    if(ySlideroffsetX < 3 || ySlideroffsetX > -3) { //点击图片
-                        imgsNode.childNodes[currentIndex].childNodes[0].click()
+                    if(ySlideroffsetX < 3 && ySlideroffsetX > -3) { //点击图片
+                        var vsrc = e.target.getAttribute('v-url')
+                        if(vsrc) {
+                            ysPlayVideo(vsrc)
+                        } else {
+                            imgsNode.childNodes[currentIndex].childNodes[0].click()
+                        }
                     } else if(ySlideroffsetX < -100) {
                         ysChangeImg('next') //左滑下一页
                     } else if(ySlideroffsetX > 100) {
                         ysChangeImg('prev') //右划上一页
                     } else { //滑动距离小，恢复
-                        imgsNode.style.marginLeft = '-' + (currentSlider * _thisWidth) + 'px'
+                        imgsNode.style.marginLeft = '-' + (currentIndex * conWidth) + 'px'
                     }
                     ySlideroffsetX = 0  //清空偏移
                     ySliderStartX = 0 //清空起始坐标
@@ -164,6 +232,7 @@ var Yslider = (function() {
         imgsNode.addEventListener('touchend', touchEvt, false)
         imgsNode.addEventListener('touchcancel', touchEvt, false)
     }
+
 
     var YS = function(opt) {
         if(!opt.target) {
@@ -183,10 +252,6 @@ var Yslider = (function() {
         }
         //生成 slider DOM
         ysGenDom(opt)
-        //如果就一张图片，以下就没有意义了
-        if(opt.imgLength < 2) {
-            return
-        }
         //初始化参数
         ysInit(opt.circleColor, opt.showCircle, opt.interval)
         //自动播放
@@ -196,6 +261,5 @@ var Yslider = (function() {
     }
     return YS
 }())
-
-//如果采用node（CommonJs)打包引入的时候加上这句
+//如果采用模块化打包的时候加上这句
 // module.exports = Yslider

@@ -1,7 +1,9 @@
 # H5 轮播 slider 组件 #
 
 > 本文主要介绍一款简单的h5 slider --Yslider, 采用原生js书写，使用于任何js框架
+> 支持视频播放
 > ![slider](./yslider.png)
+<!-- more -->
 
 ## Yslider 参数 ##
 > Yslider 参数以对象形式传入
@@ -10,8 +12,9 @@
 > 3、showCircle: 是否显示圆点导航， 非必填， 类型 boolean, default true   
 > 4、circleColor： 圆点颜色， 非必填， 类型 颜色(string)， default '#00F5FF'   
 > 5、imgArray: 图片列表， 必填， 类型 array
->> - redirect: 点击图片跳转地址， 非必填， 类型 url(string), 
+>> - redirect: 点击图片跳转地址， 非必填， 类型 url(string), 播放视频时为视频地址   
 >> - url: 图片地址， 必填， 类型 url(string)
+>> - type: 类型(string), 选填, 默认按图片处理, 如果是播放视频, type 为 video
 >> - detail: 图片介绍， 放在 alt 属性中， 非必填，类型 string
 
 ## Yslider 使用 ##
@@ -39,7 +42,7 @@
         {redirect: '', url: '/static/images/slider1.jpg', detail: 'img1'},
         {redirect: '', url: '/static/images/slider2.jpg', detail: 'img2'},
         {redirect: '', url: '/static/images/slider3.jpg', detail: 'img3'},
-        {redirect: '', url: '/static/images/slider4.jpg', detail: 'img4'}
+        {redirect: 'http://www.runoob.com/try/demo_source/movie.mp4', url: '/static/images/slider4.jpg', type: "video", detail: 'img4'}
     ]  //准备图片列表， redirect 为点击图片跳转链接， url 为图片下载地址， detail: 为图片说明
 
      Yslider({  //初始化 yslider

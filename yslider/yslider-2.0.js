@@ -64,7 +64,7 @@ var Yslider = (function() {
         sliderNode += sliderItems
 
         if(opt.showCircle && imgLength > 1) {
-            sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: 15px; margin: auto; width:'+ (18 * imgLength) +'px;">'
+            sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: px; margin: auto; width:'+ (18 * imgLength) +'px;">'
             for(var i=0; i<imgLength; i++) {
                 sliderNode += '<li style="margin-right: 5px; display: inline-block;">'
                     + '<span class="ysclider-circle" style="display: block; width: 10px; height: 10px; border: 1px solid #ddd; border-radius: 50%; background: transparent;"></span></li>'
@@ -93,12 +93,12 @@ var Yslider = (function() {
             return
         }
         if(index == 'next') {
-            currentIndex++
-        } else if(index == 'prev') {
-            currentIndex--
-        } else {
-            currentIndex = index
-        }
+			currentIndex ++
+		} else if(index == 'prev') {
+			currentIndex --
+		} else {
+			currentIndex = index
+		}
         currentIndex = currentIndex < 0 ? (imgLength * 2 - 1) : (currentIndex % (imgLength * 2))
         var circleIndex = currentIndex % imgLength
         
@@ -131,7 +131,7 @@ var Yslider = (function() {
             coverTag = document.createElement('div')
             coverTag.id = 'yslider-cover'
             coverTag.style.cssText = 'position: fixed;'
-                + 'top:0;left:0; width:100%;height:100%;background:rgba(0,0,0,0.8)'
+                + 'top:0;left:0; width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2000;'
             closeTag = document.createElement('div')
             closeTag.id = 'yslider-closev'
             closeTag.style.cssText = 'position:absolute;'
@@ -145,7 +145,7 @@ var Yslider = (function() {
             videoTag.controls = 'true'
             videoTag.style.cssText = 'position: relative;'
                 + 'top:25%;'
-                + 'width:' + conWidth + 'px;height:auto;'
+                + 'width:' + conWidth + 'px;height:auto;max-height:' + conWidth + 'px;'
             vSource = document.createElement('source') 
             vSource.src = vsrc
             vSource.type = 'video/mp4'

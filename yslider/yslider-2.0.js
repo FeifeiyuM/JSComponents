@@ -64,7 +64,7 @@ var Yslider = (function() {
         sliderNode += sliderItems
 
         if(opt.showCircle && imgLength > 1) {
-            sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: px; margin: auto; width:'+ (18 * imgLength) +'px;">'
+            sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: 30px; margin: auto; width:'+ (18 * imgLength) +'px;">'
             for(var i=0; i<imgLength; i++) {
                 sliderNode += '<li style="margin-right: 5px; display: inline-block;">'
                     + '<span class="ysclider-circle" style="display: block; width: 10px; height: 10px; border: 1px solid #ddd; border-radius: 50%; background: transparent;"></span></li>'

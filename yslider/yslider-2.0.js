@@ -137,7 +137,7 @@ var Yslider = (function() {
             closeTag.style.cssText = 'position:absolute;'
                 + 'margin: 5px;'
                 + 'top:0;right:0;height:30px;width:30px;border-radius:50%;background:#fff;color:#000;'
-                + 'font-size:24px;text-align:center;'
+                + 'font-size:20px;text-align:center;font-family:sans-serif;'
             closeTag.innerHTML = 'X'
             videoTag = document.createElement('video')
             videoTag.id = 'yslider-video'
@@ -152,6 +152,7 @@ var Yslider = (function() {
             videoTag.appendChild(vSource)
             coverTag.appendChild(closeTag)
             coverTag.appendChild(videoTag)
+            videoTag.play()
             yslider.appendChild(coverTag)
         }
         //播放

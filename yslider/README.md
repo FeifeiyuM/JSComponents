@@ -18,6 +18,7 @@
 >> - detail: 图片介绍， 放在 alt 属性中， 非必填，类型 string
 
 ## Yslider 使用 ##
+> **注意：** 推荐 yslider 3.x 版本， 3.x 版本需要依赖组件 video.js， 更好支持视频播放
 > 1、在html 标签中定一个 slider 元素用于容纳图片列表, 并定义好slider容器的尺寸
 ```html
 <style>
@@ -27,10 +28,16 @@
     overflow: hidden;  //超出不显示
 }
 </style>
+//yslider 3.x 版本需要 video-js.min.css
+<link rel="stylesheet" href="{{ STATIC_URL }}js/video/video-js.min.css" />
+
 <div class="page-wrap">
     <div id="slider" class="slider">  //slider 容器标签 一定包含id 属性
     </div>
 </div>
+//yslider 3.x 版本需要 video.js
+<script src="{{ STATIC_URL }}js/video/video.min.js"></script>
+//引入 yslider
 <script src="/static/common/slider/slider-1.0.js"></script> <!--引入 slider-->
 ```
 

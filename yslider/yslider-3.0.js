@@ -10,9 +10,6 @@
  * yslider blog: https://feifeiyum.github.io/2016/10/30/yslider/
  */
 
-// 模块化开发时使用
-// const videojs = require('video.js')
-
 var Yslider = (function() {
 
     var imgsNode = ''  //图片wrap
@@ -23,6 +20,7 @@ var Yslider = (function() {
     var intervalFlag = null //setInterval 值
     var currentIndex = 0 //当前页面编号
     var imgLength = ''
+    var videoStatus = false  //false 未播放， true 播放中
     var videoIds = []  //视频 video 标签 id
 
     var ysGenDom = function(opt) {
@@ -32,7 +30,7 @@ var Yslider = (function() {
         }
 
         conWidth = container.clientWidth //slider width
-        var conHeight = container.offsetHeight //slider height
+        conHeight = container.offsetHeight //slider height
         imgLength = opt.imgArray.length 
 
         //检查 imgArray 有效性
@@ -47,7 +45,7 @@ var Yslider = (function() {
         //生成slider dom 字符串
         var sliderNode = '<div id="yslider-wrap" class="yslider-wrap"'
             + 'style="position: relative; width: 100%; height: 100%; overflow: hidden;">'
-            +  '<ul id="yslider-imglist" class="yslider-imglist" style="position: relative;margin: 0; padding: 0; height: 100%; transition: all 0.5s; width: ' + ( conWidth * imgLength) + 'px;clear: both;">'
+            +  '<ul id="yslider-imglist" class="yslider-imglist" style="position: relative;margin: 0; padding: 0; height: 100%; transition: all 0.5s; width: ' +( conWidth * imgLength) + 'px;clear: both;">'
         var sliderItems = ''
         for(var i = 0; i < imgLength; i++) {
             var index = i
@@ -73,7 +71,7 @@ var Yslider = (function() {
 
         if(opt.showCircle && imgLength > 1) {
             sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: 30px; margin: auto; width:'+ (18 * imgLength) +'px;">'
-            for(var i = 0; i<imgLength; i++) {
+            for(var i=0; i<imgLength; i++) {
                 sliderNode += '<li style="margin-right: 5px; display: inline-block;">'
                     + '<span class="ysclider-circle" style="display: block; width: 10px; height: 10px; border: 1px solid #ddd; border-radius: 50%; background: transparent;"></span></li>'
             }
@@ -101,12 +99,12 @@ var Yslider = (function() {
             return
         }
         if(index == 'next') {
-            currentIndex++
-        } else if(index == 'prev') {
-            currentIndex--
-        } else {
-            currentIndex = index
-        }
+			currentIndex ++
+		} else if(index == 'prev') {
+			currentIndex --
+		} else {
+			currentIndex = index
+		}
         currentIndex = currentIndex < 0 ? (imgLength - 1) : (currentIndex % imgLength)
         var circleIndex = currentIndex % imgLength
         
@@ -128,7 +126,7 @@ var Yslider = (function() {
     //视频播放
     var ysPlayVideo = function(vsrc) {
        //注册 video 事件
-        for(var i = 0; i < videoIds.length; i++) {
+        for(var i = 0; i < videoIds.length; i ++) {
             videojs(videoIds[i], {}, function onPlayerReady() {
                 this.on('play', function() {
                     clearInterval(intervalFlag)
@@ -171,6 +169,8 @@ var Yslider = (function() {
                     if(ySlideroffsetX < 3 && ySlideroffsetX > -3) { //点击图片
                         if(e.target.tagName === "IMG") {
                             imgsNode.childNodes[currentIndex].childNodes[0].click()
+                        } else if(e.target.tagName === 'VIDEO' || e.target.tagName === "DIV") {
+                            return false
                         }
                     } else if(ySlideroffsetX < -50) {
                         ysChangeImg('next') //左滑下一页
@@ -234,7 +234,9 @@ var Yslider = (function() {
         //自动播放
         ysAutoPlay()
         //手动播放注册
-        ysManualPlay()
+        if(imgLength > 1) {
+            ysManualPlay()
+        }
         //播放器事件注册
         if(videoIds.length > 0) {
             ysPlayVideo()

@@ -18,7 +18,7 @@
 >> - detail: 图片介绍， 放在 alt 属性中， 非必填，类型 string
 
 ## Yslider 使用 ##
-> **注意：** 推荐 [yslider 3.x](https://github.com/FeifeiyuM/JSComponents/blob/master/yslider/yslider-3.0.js) 版本， 3.x 版本需要依赖组件 video.js， 更好支持视频播放
+> **注意：** 推荐使用 [yslider 3.x](https://github.com/FeifeiyuM/JSComponents/blob/master/yslider/yslider-3.0.js) 版本， 3.x 版本需要依赖组件 video.js， 更好支持视频播放
 > 1、在html 标签中定一个 slider 元素用于容纳图片列表, 并定义好slider容器的尺寸
 ```html
 <style>

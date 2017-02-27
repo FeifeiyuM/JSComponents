@@ -1,6 +1,6 @@
 /**
  * author: feifeiyu
- * version: 3.0
+ * version: 3.3
  * Yslider is a simple images slider for h5
  * @param target //slider container id
  * @param interval  // images change interval, s, default 3s
@@ -9,6 +9,8 @@
  * @param circleColor: //circle background-color
  * yslider blog: https://feifeiyum.github.io/2016/10/30/yslider/
  */
+//模块化开发
+//const videojs = require('video.js')
 
 var Yslider = (function() {
 
@@ -20,8 +22,8 @@ var Yslider = (function() {
     var intervalFlag = null //setInterval 值
     var currentIndex = 0 //当前页面编号
     var imgLength = ''
-    var videoStatus = false  //false 未播放， true 播放中
     var videoIds = []  //视频 video 标签 id
+    var conHeight = ''
 
     var ysGenDom = function(opt) {
         var container = document.getElementById(opt.target)
@@ -50,13 +52,20 @@ var Yslider = (function() {
         for(var i = 0; i < imgLength; i++) {
             var index = i
             if(opt.imgArray[index].type === 'video') {
-                var tagId = 'yvideo-' + i 
-                sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;">'
-                        + '<video id="' + tagId + '" class="yvideo-play video-js" controls preload="auto" width="' + conWidth + '" height="' + conHeight + '" poster="' + opt.imgArray[index].url + '" data-setup="{}">'
-                        + '<source src="' + opt.imgArray[index].redirect + '"></source>'
-                        + '</video>' 
-                    + '</li>'
-                videoIds.push(tagId)
+                if(opt.enable) {
+                    var tagId = 'yvideo-' + i 
+                    sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;">'
+                            + '<video id="' + tagId + '" class="yvideo-play video-js" controls preload="auto" width="' + conWidth + '" height="' + conHeight + '" poster="' + opt.imgArray[index].url + '" data-setup="{}">'
+                            + '<source src="' + opt.imgArray[index].redirect + '"></source>'
+                            + '</video>' 
+                        + '</li>'
+                    videoIds.push(tagId)
+                } else {
+                    sliderItems += '<li style="display: inline-block; height: 100%; width: ' + conWidth + 'px;">'
+                   + '<img\ v-url="' + opt.imgArray[index].redirect + '" src="' + opt.imgArray[index].url + '"\ alt="' + opt.imgArray[index].detail + '"\ style="width: 100%;">'
+                   + '<button class="video-play" v-url="' + opt.imgArray[index].redirect + '" style="position:absolute; top:35%; left:' + conWidth*(i+0.4)+ 'px; border: 2px solid #fff; border-radius: 50%; background: rgba(43, 51, 63, 0.6); height: 60px; width: 60px; "><div v-url="' + opt.imgArray[index].redirect + '" style="position:relative;left:16px;width:0;height:0;transform: rotate(45deg);border:8px solid;border-color: #fff #fff transparent transparent;"></div></button>'
+                   + '</li>'
+                }
             } else {
                 sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;">'
                     + (opt.imgArray[index].redirect ? '<a href="' + opt.imgArray[index].redirect + '">' : '<a>')
@@ -99,12 +108,12 @@ var Yslider = (function() {
             return
         }
         if(index == 'next') {
-			currentIndex ++
-		} else if(index == 'prev') {
-			currentIndex --
-		} else {
-			currentIndex = index
-		}
+            currentIndex++
+        } else if(index == 'prev') {
+            currentIndex--
+        } else {
+            currentIndex = index
+        }
         currentIndex = currentIndex < 0 ? (imgLength - 1) : (currentIndex % imgLength)
         var circleIndex = currentIndex % imgLength
         
@@ -124,19 +133,26 @@ var Yslider = (function() {
         }
     }
     //视频播放
-    var ysPlayVideo = function(vsrc) {
+    var ysPlayVideo = function(enable, cb) {
        //注册 video 事件
         for(var i = 0; i < videoIds.length; i ++) {
             videojs(videoIds[i], {}, function onPlayerReady() {
+                var vsrc = this.children()[0].currentSrc
                 this.on('play', function() {
                     clearInterval(intervalFlag)
+                    cb({status: 'play', src: vsrc})
                 })
                 this.on('pause', function() {
+                    this.exitFullscreen()
                     ysAutoPlay()
+                    cb({status: 'pause', src: vsrc})
                 })
                 this.on('ended', function() {
+                    this.exitFullscreen()
                     ysAutoPlay()
+                    cb({status: 'ended', src: vsrc})
                 })
+                
             })
         }
     }
@@ -145,7 +161,7 @@ var Yslider = (function() {
         intervalFlag = setInterval(function() { ysChangeImg('next')}, interval)
     }
     //手动播放函数
-    var ysManualPlay = function() {
+    var ysManualPlay = function(cb) {
         var ySlideroffsetX = 0
         var ySliderStartX = 0
 
@@ -161,15 +177,20 @@ var Yslider = (function() {
                     break
                 case 'touchmove': 
                     e.preventDefault()
-                    ySlideroffsetX = touch.pageX - ySliderStartX
-                    imgsNode.style.marginLeft = '-' + (currentIndex * conWidth - ySlideroffsetX) + 'px'
+                    if(imgLength > 1) {
+                        ySlideroffsetX = touch.pageX - ySliderStartX
+                        imgsNode.style.marginLeft = '-' + (currentIndex * conWidth - ySlideroffsetX) + 'px'
+                    }
                     break
                 case 'touchend':
                     e.preventDefault()
                     if(ySlideroffsetX < 3 && ySlideroffsetX > -3) { //点击图片
-                        if(e.target.tagName === "IMG") {
+                        var vsrc = e.target.getAttribute('v-url')
+                        if(vsrc) {
+                            cb({status: 'play', src: vsrc})
+                        } else if(e.target.tagName === "IMG") {
                             imgsNode.childNodes[currentIndex].childNodes[0].click()
-                        } else if(e.target.tagName === 'VIDEO' || e.target.tagName === "DIV") {
+                        } else if(e.target.tagName === 'VIDEO' || e.target.tagName === "DIV" || e.target.tagName === 'BUTTON') {
                             return false
                         }
                     } else if(ySlideroffsetX < -50) {
@@ -186,8 +207,13 @@ var Yslider = (function() {
                 case 'touchcancel':
                     e.preventDefault()
                     if(ySlideroffsetX < 3 && ySlideroffsetX > -3) { //点击图片
-                        if(e.target.tagName === "IMG") {
+                        var vsrc = e.target.getAttribute('v-url')
+                        if(vsrc) {
+                            cb({status: 'play', src: vsrc})
+                        } else if(e.target.tagName === "IMG") {
                             imgsNode.childNodes[currentIndex].childNodes[0].click()
+                        } else if(e.target.tagName === 'VIDEO' || e.target.tagName === "DIV" || e.target.tagName === 'BUTTON') {
+                            return false
                         }
                     } else if(ySlideroffsetX < -50) {
                         ysChangeImg('next') //左滑下一页
@@ -211,7 +237,7 @@ var Yslider = (function() {
     }
 
 
-    var YS = function(opt) {
+    var YS = function(opt, cb) {
         if(!opt.target) {
             throw '[error]: Yslider - slider container DOM id target can not be null'
         }
@@ -227,6 +253,9 @@ var Yslider = (function() {
         if(opt.showCircle !== undefined && typeof opt.showCircle !== 'boolean') {
             throw '[error]: Yslider - type of showCircle is boolean'
         }
+        if(opt.enable !== undefined && typeof opt.enable !== 'boolean') {
+            throw '[error]: Yslider - type of enable is boolean'
+        }
         //生成 slider DOM
         ysGenDom(opt)
         //初始化参数
@@ -234,12 +263,10 @@ var Yslider = (function() {
         //自动播放
         ysAutoPlay()
         //手动播放注册
-        if(imgLength > 1) {
-            ysManualPlay()
-        }
+        ysManualPlay(cb)
         //播放器事件注册
         if(videoIds.length > 0) {
-            ysPlayVideo()
+            ysPlayVideo(opt.enable !== undefined ? opt.enable : true, cb)
         }
     }
     return YS

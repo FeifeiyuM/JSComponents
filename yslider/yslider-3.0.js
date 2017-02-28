@@ -61,10 +61,11 @@ var Yslider = (function() {
                         + '</li>'
                     videoIds.push(tagId)
                 } else {
-                    sliderItems += '<li style="display: inline-block; height: 100%; width: ' + conWidth + 'px;">'
+                    sliderItems += '<li style="float:left; height: 100%; width: ' + conWidth + 'px;">'
+                   + '<a href="javascript:void(0);">'
                    + '<img\ v-url="' + opt.imgArray[index].redirect + '" src="' + opt.imgArray[index].url + '"\ alt="' + opt.imgArray[index].detail + '"\ style="width: 100%;">'
                    + '<button class="video-play" v-url="' + opt.imgArray[index].redirect + '" style="position:absolute; top:35%; left:' + conWidth*(i+0.4)+ 'px; border: 2px solid #fff; border-radius: 50%; background: rgba(43, 51, 63, 0.6); height: 60px; width: 60px; "><div v-url="' + opt.imgArray[index].redirect + '" style="position:relative;left:16px;width:0;height:0;transform: rotate(45deg);border:8px solid;border-color: #fff #fff transparent transparent;"></div></button>'
-                   + '</li>'
+                   + '</a></li>''
                 }
             } else {
                 sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;">'

@@ -49,17 +49,17 @@ var Yslider = (function() {
         //生成slider dom 字符串
         var sliderNode = '<div id="yslider-wrap" class="yslider-wrap"'
             + 'style="position: relative; width: 100%; height: 100%; overflow: hidden;">'
-            +  '<ul id="yslider-imglist" class="yslider-imglist" style="position: relative;margin: 0; padding: 0; height: 100%; transition: all 0.5s; width: ' + ( conWidth * imgLength) + 'px;clear: both;">'
+            +  '<ul id="yslider-imglist" class="yslider-imglist" style="position: relative;margin: 0; padding: 0; height: 100%; transition: all 0.5s; width: ' +( conWidth * imgLength) + 'px;clear: both;">'
         var sliderItems = ''
         for(var i = 0; i < imgLength; i++) {
             var index = i
             if(opt.imgArray[index].type === 'video') {
                 if(opt.enable) {
                     var tagId = 'yvideo-' + i 
-                    sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;">'
+                    sliderItems += '<li class="yvideo-item" style="float: left; height: 100%; width: ' + conWidth + 'px;">'
                             + '<video id="' + tagId + '" class="yvideo-play video-js" controls preload="auto" width="' + conWidth + '" height="' + conHeight + '" poster="' + opt.imgArray[index].url + '" data-setup="{}">'
                             + '<source src="' + opt.imgArray[index].redirect + '"></source>'
-                            + '</video>' 
+                            + '</video>'
                         + '</li>'
                     videoIds.push(tagId)
                 } else {
@@ -70,7 +70,7 @@ var Yslider = (function() {
                    + '</a></li>'
                 }
             } else {
-                sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;">'
+                sliderItems += '<li style="float: left; height: 100%; width: ' + conWidth + 'px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;-webkit-box-pack: center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;">'
                     + (opt.imgArray[index].redirect ? '<a href="' + opt.imgArray[index].redirect + '">' : '<a>')
                     + '<img src="' + opt.imgArray[index].url + '" alt="' + opt.imgArray[index].detail + '" style="width: 100%;height: auto;">'
                     + '</a></li>'
@@ -79,8 +79,8 @@ var Yslider = (function() {
         sliderNode += sliderItems
 
         if(opt.showCircle && imgLength > 1) {
-            sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: 30px; margin: auto; width:' + (18 * imgLength) +'px;">'
-            for(var i = 0; i<imgLength; i++) {
+            sliderNode += '</ul><ul class="ysclider-circles" style="position: relative; bottom: 30px; margin: auto; width:'+ (18 * imgLength) +'px;">'
+            for(var i=0; i<imgLength; i++) {
                 sliderNode += '<li style="margin-right: 5px; display: inline-block;">'
                     + '<span class="ysclider-circle" style="display: block; width: 10px; height: 10px; border: 1px solid #ddd; border-radius: 50%; background: transparent;"></span></li>'
             }
@@ -136,7 +136,7 @@ var Yslider = (function() {
     //视频播放
     var ysPlayVideo = function(enable, cb) {
        //注册 video 事件
-        for(var i = 0; i < videoIds.length; i++) {
+        for(var i = 0; i < videoIds.length; i ++) {
             videojs(videoIds[i], {}, function onPlayerReady() {
                 var vsrc = this.children()[0].currentSrc
                 this.on('play', function() {

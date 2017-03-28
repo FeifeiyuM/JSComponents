@@ -15,7 +15,7 @@
  * @param param // reset request query, type: object
  * @param cb // callback type: function
  * Yscroll is a page split component for h5
- * Yscroll blog: https://feifeiyum.github.io/2016/09/26/yscroll-for-h5/
+ * Yscroll blog: https://feifeiyum.github.io/2016/09/26/front-yscroll-for-h5/
  */
 
 // const reqwest = require('reqwest')

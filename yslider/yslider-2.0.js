@@ -7,7 +7,7 @@
  * @param imgArray // images list, include properties: redirect, type, url, detail
  * @param showCircle //show circle nav, dafault true
  * @param circleColor: //circle background-color
- * yslider blog: https://feifeiyum.github.io/2016/10/30/yslider/
+ * yslider blog: https://feifeiyum.github.io/2016/10/30/front-yslider/
  */
 
 var Yslider = (function() {

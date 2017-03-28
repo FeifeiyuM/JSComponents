@@ -7,7 +7,7 @@
  * @param confirmTextSize // confirm text font size
  * @param leftButtonText, leftButtonTextSize, leftButtonTextColor, //left button param
  * @param rightButtonText, rightButtonTextColor, rightButtonTextSize //right button param
- * yh5confirm blog: https://feifeiyum.github.io/2016/10/30/yh5confirm/
+ * yh5confirm blog: https://feifeiyum.github.io/2016/10/30/front-yh5confirm/
  */
 
 var Yh5Confirm = (function() {

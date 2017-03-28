@@ -8,7 +8,7 @@
  * @param length //verification code length, default 4
  * @param bgColor //verification code container background color, 
  * @param bgImg  //verification code container background image,
- * Yverifycode blog: https://feifeiyum.github.io/2017/01/04/verify-code/
+ * Yverifycode blog: https://feifeiyum.github.io/2017/01/04/front-verify-code/
 */
 
 //定义Yverifycode 

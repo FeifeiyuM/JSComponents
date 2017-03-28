@@ -5,7 +5,7 @@
  * @param url //image upload address
  * @param csrftoken  // csrftoken for POST Request 
  * @param hideField // params submit with image 
- * Yupload blog: https://feifeiyum.github.io/2016/12/24/yupload/
+ * Yupload blog: https://feifeiyum.github.io/2016/12/24/front-yupload/
  */
 
 var Yupload = (function() {

@@ -289,7 +289,7 @@ var Yscroll = (function() {
             self.next = self.assembleQuery(self.next, param)
         }
         cb && (self.cb = cb)
-        
+        self.loadEnable = true
         //请求数据
         self.fetchData()
     }

@@ -1,6 +1,6 @@
 # 图片懒加载组件 Ylazyload #
 
-[图片懒加载组件 Ylazyload](https://feifeiyum.github.io//2017/05/13/front-ylazyload/)   
+博客： [图片懒加载组件 Ylazyload](https://feifeiyum.github.io//2017/05/13/front-ylazyload/)   
 DEMO: 参见 demo.html
 
 ## 实现原理 ##

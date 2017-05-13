@@ -87,23 +87,32 @@ var Ylazyload = (function() {
     YLL.prototype.isVisible = function() {
         var self = this
         var removeImg = []
-        self.imgList.forEach(function(item, index) {
+        var listLen = self.imgList.length
+        
+        for(var i = 0; i < listLen; i++) { 
+            var item = self.imgList[i]
             var itemCoord = item.getBoundingClientRect()
             //对比坐标判断是否进入进入可视区域
-            if(itemCoord.top < self.visibleArea.bottom &&
-                itemCoord.bottom > self.visibleArea.top &&
-                itemCoord.left < self.visibleArea.right &&
-                itemCoord.right > self.visibleArea.left) {
+            if(itemCoord.top > self.visibleArea.bottom) {
+                continue
+            } else if(itemCoord.bottom < self.visibleArea.top) {
+                continue
+            } else if(itemCoord.left > self.visibleArea.right) {
+                continue
+            } else if(itemCoord.right < self.visibleArea.left) {
+                continue
+            } else {
                 //如果进入可视区域，则替换去真实图片链接
                 self._activeImg(item)
-                //如果图片已经替换了真实链接，踢出遍历列表
+                //如果图片f已经替换了真实链接，踢出遍历列表
                 removeImg.push(item)
             }
-        })
-        removeImg.forEach(function(item) {
-            var index = self.imgList.indexOf(item)
+        }
+        listLen = removeImg.length
+        for(var i = 0; i < listLen; i++) {
+            var index = self.imgList.indexOf(removeImg[i])
             self.imgList.splice(index, 1)
-        })
+        }
     }
     //从属性 ylazyload-src 取出真实图片地址， 替换默认图片地址
     YLL.prototype._activeImg = function(imgDom) {

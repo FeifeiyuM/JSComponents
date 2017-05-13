@@ -1,7 +1,7 @@
 # 图片懒加载组件 Ylazyload #
 
-## 本组件博客地址 ##
-[图片懒加载组件 Ylazyload](https://feifeiyum.github.io//2017/05/13/front-ylazyload/)
+[图片懒加载组件 Ylazyload](https://feifeiyum.github.io//2017/05/13/front-ylazyload/)   
+DEMO: 参见 demo.html
 
 ## 实现原理 ##
 1、在图片不在可视区域的时候，所有图采用默认的占位图显示，而不是让浏览器加载所有的真实图片，从而减少服务器和客户机的带宽资源，实现按需提供服务的目的   

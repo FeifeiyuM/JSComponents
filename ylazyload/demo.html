@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Ylazyload Demo</title>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .page-main {
+      width: 100%;
+      height: 580px;
+      overflow: scroll;
+    }
+    .page-main ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .page-main ul li {
+      width: 100%;
+      height: 200px;
+      border-top: 5px solid blue;
+    }
+    .page-main ul li img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <body>
+    <h5>Ylazyload Demo</h5>
+    <div id='page-main' class="page-main">
+    <ul id="img-list">
+      
+    </ul>
+    </div>
+  </body>
+<script src="./ylazyload-1.0.js"></script>
+  <script>
+    (function() {
+      urlList = [
+        'http://img1c.xgo-img.com.cn/pics/1563/1562268.jpg',
+        'http://img1d.xgo-img.com.cn/pics/157/156499.jpg',
+        'http://img2.imgtn.bdimg.com/it/u=2279883871,2325570064&fm=214&gp=0.jpg',
+        'http://img1a.xgo-img.com.cn/pics/560/559361.jpg',
+        'http://pic1.win4000.com/pic/8/f9/af641341596.jpg',
+        'http://pic.baike.soso.com/p/20120626/20120626171308-1695954567.jpg',
+        'http://img3.redocn.com/tupian/20150106/heicaifeizhuliuxiangkuang_3802972.jpg',
+        'http://pic.58pic.com/58pic/15/91/92/29W58PIC4MP_1024.jpg',
+        'http://img5.imgtn.bdimg.com/it/u=2167672004,1418153925&fm=23&gp=0.jpg',
+        'http://file06.16sucai.com/2016/0927/ae4f4303f6ad9ccfa6fde724d44e46a1.jpg',
+        'http://thumb102.hellorf.com/preview/245987983.jpg',
+        'http://pic.58pic.com/58pic/15/54/87/64d58PIC4ZK_1024.jpg',
+        'http://img04.tooopen.com/images/20131103/sy_45428144877.jpg',
+      ]
+
+      var defaultImg = 'http://picm.photophoto.cn/015/041/004/0410040039.jpg'
+
+      var yLazyload = new Ylazyload('page-main', function(dom, src) {
+          console.log('src', src)
+      })
+
+      var renderImgList = function renderImgList() {
+        var imgLen = urlList.length
+        var elem = ''
+        for(var i=0; i<imgLen; i++) {
+          elem += '<li><img class="ylazyload" src="' + defaultImg + '" ylazyload-src="' + urlList[i] + '"></li>'
+        }
+        document.querySelector('#img-list').innerHTML = elem
+      }
+      renderImgList()
+      yLazyload.appendImgs('ylazyload')
+    }())
+  </script>
+</html>

@@ -1,17 +1,14 @@
 /**
  * author: feifeiyu
- * version: 3.3
+ * version: 3.4
  * Yslider is a simple images slider for h5
  * @param target //slider container id
- * @param autoplay // enable slider autoplay, default true 
  * @param interval  // images change interval, s, default 3s
  * @param imgArray // images list, include properties: redirect, type, url, detail
  * @param showCircle //show circle nav, dafault true
  * @param circleColor: //circle background-color
- * yslider blog: https://feifeiyum.github.io/2016/10/30/front-yslider/
+ * yslider blog: https://feifeiyum.github.io/2016/10/30/yslider/
  */
-//模块化开发
-//const videojs = require('video.js')
 
 var Yslider = (function() {
 
@@ -26,6 +23,7 @@ var Yslider = (function() {
     var imgLength = ''
     var videoIds = []  //视频 video 标签 id
     var conHeight = ''
+    var isPlaying = false //视频是否正在播放
 
     var ysGenDom = function(opt) {
         var container = document.getElementById(opt.target)
@@ -141,15 +139,16 @@ var Yslider = (function() {
                 var vsrc = this.children()[0].currentSrc
                 this.on('play', function() {
                     clearInterval(intervalFlag)
+                    isPlaying = true
                     cb({status: 'play', src: vsrc})
                 })
                 this.on('pause', function() {
                     this.exitFullscreen()
-                    ysAutoPlay()
                     cb({status: 'pause', src: vsrc})
                 })
                 this.on('ended', function() {
                     this.exitFullscreen()
+                    isPlaying = false
                     ysAutoPlay()
                     cb({status: 'ended', src: vsrc})
                 })
@@ -203,7 +202,7 @@ var Yslider = (function() {
                     }
                     ySlideroffsetX = 0  //清空偏移
                     ySliderStartX = 0 //清空起始坐标
-                    ysAutoPlay()  //恢复自动轮播
+                    !isPlaying && ysAutoPlay()  //恢复自动轮播
                     break
                 case 'touchcancel':
                     e.preventDefault()
@@ -225,7 +224,7 @@ var Yslider = (function() {
                     }
                     ySlideroffsetX = 0  //清空偏移
                     ySliderStartX = 0 //清空起始坐标
-                    ysAutoPlay()  //恢复自动轮播
+                   !isPlaying && ysAutoPlay()  //恢复自动轮播
                     break
                 default:
                     break
@@ -236,6 +235,7 @@ var Yslider = (function() {
         imgsNode.addEventListener('touchend', touchEvt, false)
         imgsNode.addEventListener('touchcancel', touchEvt, false)
     }
+
 
     var YS = function(opt, cb) {
         if(!opt.target) {

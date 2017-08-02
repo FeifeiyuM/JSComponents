@@ -1,6 +1,6 @@
 /**
  * author: feifeiyu
- * verion: 2.0
+ * verion: 2.1
  * @param target // list container DOM id， not null
  * @param refresh  // enable or disable page refresh, type: boolean, default: true
  * @param url // request api address, type: url string,
@@ -227,6 +227,7 @@ var Yscroll = (function() {
                             } 
                         }
                     }
+                    offsetY = 0
                     break
                 case 'touchcancel': 
                     self.ysWrap.style.top = '0px'
@@ -262,6 +263,7 @@ var Yscroll = (function() {
                             } 
                         }
                     }
+                    offsetY = 0
                     break
                 default:
                     break

@@ -41,7 +41,13 @@ var Yupload = (function() {
                 }
                 clearInterval(interFlag)
                 try {
-                    var data = JSON.parse(iframe.contentDocument.activeElement.childNodes[0].innerText)
+                    var data = null
+                    try {
+                        data = JSON.parse(iframe.contentDocument.activeElement.innerText)
+                    } catch(err) {
+                        data = JSON.parse(iframe.contentDocument.activeElement.childNodes[0].innerText)
+                    }
+                    
                     self.cb && self.cb(null, data)
                 } catch(err) {
                     self.cb && self.cb(err, null)

@@ -1,4 +1,4 @@
-# Feifeiyu 组件仓库  
+# Feifeiyu 的组件仓库  
 
 ## js 组件 ##
 #### loading 组件 [Yloading](https://github.com/FeifeiyuM/JSComponents/tree/master/loading-h5)
@@ -8,3 +8,4 @@
 #### 原生文件上传组件 [Yupload](https://github.com/FeifeiyuM/JSComponents/tree/master/yupload)
 #### 验证码生成组件 [Yverifycode](https://github.com/FeifeiyuM/JSComponents/tree/master/yverifycode)
 #### 提醒(类toast)组件 [Yhint](https://github.com/FeifeiyuM/JSComponents/tree/master/yhint)
+
